@@ -1,15 +1,12 @@
-// =================================================
-// DIAMOND - Discord Bot
-// Created by LOSDEV (www.losdev.es)
-// Email: losdevpath@gmail.com
-// =================================================
-// Módulos
+/*
+*   Discord Bot by LOSDEV
+*   Website: losdev.es
+*   Email: losdevpath@gmail.com
+*/
 const Discord = require("discord.js");
 const mysql = require("mysql");
-// Archivos
 const config = require("../config.json");
 const botinfo = require("../version.json");
-// Cooldown
 const cdPiedra = new Set();
 
 exports.execute = (bot, message, args, con) => {

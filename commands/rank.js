@@ -1,14 +1,13 @@
-// =================================================
-// DIAMOND - Discord Bot
-// Created by LOSDEV (www.losdev.es)
-// Email: losdevpath@gmail.com
-// =================================================
+/*
+*   Discord Bot by LOSDEV
+*   Website: losdev.es
+*   Email: losdevpath@gmail.com
+*/
 const config = require("../config.json");
 const Discord = require("discord.js");
 const mysql = require("mysql");
-// Archivos
 const botinfo = require("../version.json");
-const ranks = require("../bot_data/public_ranks.json");
+const ranks = require("../data/public_ranks.json");
 
 exports.execute = (bot, message, args, con) => {
   // Comprobar si el comando está activo

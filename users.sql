@@ -25,35 +25,36 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `usuarios`
+-- Estructura de tabla para la tabla `users`
 --
 
-CREATE TABLE `usuarios` (
+CREATE TABLE `users` (
   `uid` int(11) NOT NULL,
   `id` varchar(30) NOT NULL,
   `exp` int(11) NOT NULL,
-  `nivel` int(11) NOT NULL,
-  `servidor` varchar(30) NOT NULL,
-  `dinero` int(11) NOT NULL DEFAULT '0',
-  `sugerencias` int(11) NOT NULL DEFAULT '0',
-  `reportes` int(11) NOT NULL DEFAULT '0'
+  `level` int(11) NOT NULL,
+  `server` varchar(30) NOT NULL,
+  `money` int(11) NOT NULL DEFAULT '0',
+  `suggestions` int(11) NOT NULL DEFAULT '0',
+  `reports` int(11) NOT NULL DEFAULT '0',
+  `messages` int(11) NOT NULL DEFAULT '0',
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Volcado de datos para la tabla `usuarios`
+-- Volcado de datos para la tabla `users`
 --
 
-INSERT INTO `usuarios` (`uid`, `id`, `exp`, `nivel`, `servidor`, `dinero`, `sugerencias`, `reportes`) VALUES
-(1, '118797947130347522', 0, 0, '424697508103716865', 0, 0, 0);
+INSERT INTO `users` (`uid`, `id`, `exp`, `level`, `server`, `money`, `suggestions`, `reports`, `messages`) VALUES
+(1, '0000000000000', 0, 0, '0000000000000', 0, 0, 0);
 
 --
 -- Índices para tablas volcadas
 --
 
 --
--- Indices de la tabla `usuarios`
+-- Indices de la tabla `users`
 --
-ALTER TABLE `usuarios`
+ALTER TABLE `users`
   ADD PRIMARY KEY (`uid`);
 
 --
@@ -61,9 +62,9 @@ ALTER TABLE `usuarios`
 --
 
 --
--- AUTO_INCREMENT de la tabla `usuarios`
+-- AUTO_INCREMENT de la tabla `users`
 --
-ALTER TABLE `usuarios`
+ALTER TABLE `users`
   MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 COMMIT;
 

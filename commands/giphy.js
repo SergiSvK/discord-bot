@@ -1,13 +1,11 @@
-// =================================================
-// DIAMOND - Discord Bot
-// Created by LOSDEV (www.losdev.es)
-// Email: losdevpath@gmail.com
-// =================================================
-// Archivos
+/*
+*   Discord Bot by LOSDEV
+*   Website: losdev.es
+*   Email: losdevpath@gmail.com
+*/
 const config = require("../config.json");
 const botinfo = require("../version.json");
 const errors = require("../bot_utils/errores.js");
-// Módulos
 const Discord = require("discord.js");
 const giphy = require('giphy-api')(config.giphy_apikey);
 

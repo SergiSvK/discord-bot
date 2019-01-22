@@ -1,17 +1,15 @@
-// =================================================
-// DIAMOND - Discord Bot
-// Created by LOSDEV (www.losdev.es)
-// Email: losdevpath@gmail.com
-// =================================================
-// Módulos
+/*
+*   Discord Bot by LOSDEV
+*   Website: losdev.es
+*   Email: losdevpath@gmail.com
+*/
 const Discord = require("discord.js");
 const request = require('request');
 const steamID = require('steamid');
 const moment = require('moment');
-// Archivos
 const config = require("../config.json");
 const botinfo = require("../version.json");
-var steamCountries = require('../bot_data/steam_countries.min.json');
+var steamCountries = require('../data/steamcountries.min.json');
 
 exports.execute = (bot, message, args) => {
   var steamIDString;
