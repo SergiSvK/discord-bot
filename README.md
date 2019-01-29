@@ -4,6 +4,7 @@
 </h1>
 <p align="center">
   <a href="#commands">Commands</a> •
+  <a href="#requirements">Requirements</a> •
   <a href="#installation">Installation</a> •
   <a href="#images">Images</a>
 </p>
@@ -54,13 +55,13 @@
 * !youtube
   - Reproduce música de youtube en un canal de voz.
 
-## Installation
-Requisitos:
+## Requirements
 - Dedicated Server or VPS
 - MySQL
 - [Git](https://git-scm.com)
 - [NodeJS](https://nodejs.org/es/)
 
+## Installation
 ```bash
 # Clone the repository
 $ git clone https://github.com/losdevpath/discord-bot
@@ -80,8 +81,15 @@ or
 $ node index.js
 or
 $ pm2 start index.js --name "bot-name"
+
+# Create new application bot here
+https://discordapp.com/developers/applications
+
+# Change [CLIENT ID] by the ID of your bot and enter the link to add it to your server
+https://discordapp.com/oauth2/authorize?client_id=[CLIENT ID]&scope=bot&permissions=8
 ```
-## Imágenes
+
+## Images
 <p align="center">
   <img src="https://i.imgur.com/w5vkUVQ.png"><br>
   Lista completa de comandos
