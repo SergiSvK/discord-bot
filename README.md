@@ -10,50 +10,46 @@
 </p>
 
 ## Commands
-* !4chan
-  - Muestra una imagen de un foro de 4chan.
-* !ayuda
-  - Muestra una lista de los comandos disponibles.
-* !8ball
-  - Haz una pregunta a la bola mágica.
+* !4chan (forum)
+  - Show an image of a 4chan forum.
+* !help
+  - Displays a list of available commands.
+* !8ball (question)
+  - Ask the magic ball a question.
 * !bot
-  - Información del bot.
-* !botchat
-  - Habla en nombre del bot. (Admin)
-* !canal
-  - Información del canal donde escribes este comando.
-* !config
-  - Cambiar la configuración del servidor. (Admin)
-* !eliminar
-  - Elimina una cantidad de mensajes del canal. (Staff)
-* !embed
+  - Bot information.
+* !botchat (message)
+  - Speak on behalf of the bot. (Admin)
+* !channel
+  - Information of the channel where you write this command.
+* !remove (number)
+  - Remove a number of messages from the channel. (Staff)
+* !embed (message)
   - Escribe en un mensaje embebido. (Admin)
-* !fortuna
-  - Abre una galleta de la fortuna.
+* !fortune
+  - Open a fortune cookie.
 * !giphy
-  - Muestra gifs random de la página giphy.com.
+  - Show random gifs of the page giphy.com.
 * !minecraft
-  - Estado de minecraft.net, información de servidores, etc.
-* !nivel
-  - Muestra tu nivel y experiencia.
-* !noticia
-  - Escribe una noticia en nombre del servidor. (Admin)
-* !perfil
-  - Muestra tu perfil o el de un miembro.
-* !rango
-  - Añade un rango a tu perfil.
-* !reportar
-  - Reporta a un miembro del servidor.
+  - State of minecraft.net, server information, etc.
+* !level
+  - Show your level and experience.
+* !new (message)
+  - Write a news item on behalf of the server. (Admin)
+* !profile (member)
+  - Show your profile or that of a member.
+* !report (member) (message)
+  - Report a member.
 * !rps
-  - Piedra, papel, tijera, lagarto, spock.
+  - Rock, paper, scissors, lizard, spock.
 * !server
-  - Información sobre el servidor.
-* !steam
-  - Muestra tu cuenta de steam o de otro miembro.
-* !sugerencia
-  - Envia una sugerencia.
-* !youtube
-  - Reproduce música de youtube en un canal de voz.
+  - Information about the server.
+* !steam (member)
+  - Show your steam account or another member.
+* !suggerence (message)
+  - Send a suggestion
+* !music (play) (url)
+  - Play Youtube music on a voice channel.
 
 ## Requirements
 - Dedicated Server or VPS
@@ -92,17 +88,17 @@ https://discordapp.com/oauth2/authorize?client_id=[CLIENT ID]&scope=bot&permissi
 ## Images
 <p align="center">
   <img src="https://i.imgur.com/w5vkUVQ.png"><br>
-  Lista completa de comandos
+  Commands
 </p>
 <p align="center">
   <img src="https://i.imgur.com/cF6bw7P.png"><br>
-  Radio
+  Youtube music
 </p>
 <p align="center">
   <img src="https://i.imgur.com/ZOCrNmU.png"><br>
-  Servidor de Minecraft
+  Minecraft server information
 </p>
 <p align="center">
   <img src="https://i.imgur.com/dCfZSE9.png"><br>
-  Mensaje de Bienvenida
+  Welcome message
 </p>
