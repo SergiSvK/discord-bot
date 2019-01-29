@@ -1,19 +1,14 @@
 <h1 align="center">
-<br>
-  <img src="https://i.imgur.com/F5j1Vk0.png" alt="Diamond Bot" width="220">
-<br>
-  DIAMOND BOT
-  <br>
-  <br>
+  DISCORD BOT
+  <br>by <a href="https://losdev.es" target="_blank">LOSDEV</a>
 </h1>
-<h4 align="center">Un bot para Discord creado por <a href="https://losdev.es" target="_blank">LOSDEV</a></h4>
 <p align="center">
-  <a href="#comandos">Comandos</a> •
-  <a href="#instalación">Instalación</a> •
-  <a href="#imágenes">Imágenes</a>
+  <a href="#commands">Commands</a> •
+  <a href="#installation">Installation</a> •
+  <a href="#images">Images</a>
 </p>
 
-## Comandos
+## Commands
 * !4chan
   - Muestra una imagen de un foro de 4chan.
 * !ayuda
@@ -59,39 +54,47 @@
 * !youtube
   - Reproduce música de youtube en un canal de voz.
 
-## Instalación
-Para clonar y usar el bot necesitas [Git](https://git-scm.com) y [NodeJS](https://nodejs.org/es/)
+## Installation
+Requisitos:
+- Dedicated Server or VPS
+- MySQL
+- [Git](https://git-scm.com)
+- [NodeJS](https://nodejs.org/es/)
 
 ```bash
-# Clona el repositorio
-$ git clone https://github.com/losdevpath/diamond-bot
+# Clone the repository
+$ git clone https://github.com/losdevpath/discord-bot
 
-# Accede a la carpeta
-$ cd diamond-bot
+# Access the folder
+$ cd discord-bot
 
-# Instala las dependencias
+# Install the dependencies
 $ npm install
 
-# Renombra el archivo .example.env
+# Rename the .example.env file and fill the information.
 $ mv .example.env .env
 
-# Ejecuta el bot
+# Run the bot
 $ npm run index
+or
+$ node index.js
+or
+$ pm2 start index.js --name "bot-name"
 ```
 ## Imágenes
 <p align="center">
-  <img src="https://i.imgur.com/w5vkUVQ.png" alt="Comandos"><br>
+  <img src="https://i.imgur.com/w5vkUVQ.png"><br>
   Lista completa de comandos
 </p>
 <p align="center">
-  <img src="https://i.imgur.com/cF6bw7P.png" alt="Radio"><br>
+  <img src="https://i.imgur.com/cF6bw7P.png"><br>
   Radio
 </p>
 <p align="center">
-  <img src="https://i.imgur.com/ZOCrNmU.png" alt="Servidor de Minecraft"><br>
+  <img src="https://i.imgur.com/ZOCrNmU.png"><br>
   Servidor de Minecraft
 </p>
 <p align="center">
-  <img src="https://i.imgur.com/dCfZSE9.png" alt="Mensaje de Bienvenida"><br>
+  <img src="https://i.imgur.com/dCfZSE9.png"><br>
   Mensaje de Bienvenida
 </p>
