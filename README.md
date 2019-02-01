@@ -12,13 +12,13 @@
 ## Commands
 * !4chan (forum)
   - Show an image of a 4chan forum.
-* !help
+* !commands
   - Displays a list of available commands.
 * !8ball (question)
   - Ask the magic ball a question.
 * !bot
   - Bot information.
-* !botchat (message)
+* !say (message)
   - Speak on behalf of the bot. (Admin)
 * !channel
   - Information of the channel where you write this command.
