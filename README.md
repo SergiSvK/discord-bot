@@ -47,5 +47,5 @@ $ node index.js
 or
 $ pm2 start index.js --name "bot-name"
 
-# 8. Copy bot invite link from console and paste in your browser to invite bot to your server.
+# 8. Copy invite link from console and paste in your browser to invite the bot to your server.
 ```
