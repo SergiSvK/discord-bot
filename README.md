@@ -1,6 +1,5 @@
 <h1 align="center">
-  DISCORD BOT
-  <br>by <a href="https://losdev.es" target="_blank">LOSDEV</a>
+  Discord-Bot by <a href="https://losdev.es" target="_blank">LOSDEV</a>
 </h1>
 <p align="center">
   <a href="#commands">Commands</a> •
@@ -8,48 +7,12 @@
   <a href="#installation">Installation</a> •
   <a href="#images">Images</a>
 </p>
+<p align="center">
+  <img src="https://img.shields.io/github/downloads/losdevpath/discord-bot/total.svg?style=flat" />
+  <img src="https://img.shields.io/github/license/losdevpath/discord-bot.svg?style=flat">
+  <img src="https://img.shields.io/github/last-commit/losdevpath/discord-bot.svg?style=flat">
+</p>
 
-## Commands
-* !4chan (forum)
-  - Show an image of a 4chan forum.
-* !commands
-  - Displays a list of available commands.
-* !8ball (question)
-  - Ask the magic ball a question.
-* !bot
-  - Bot information.
-* !say (message)
-  - Speak on behalf of the bot. (Admin)
-* !channel
-  - Information of the channel where you write this command.
-* !remove (number)
-  - Remove a number of messages from the channel. (Staff)
-* !embed (message)
-  - Escribe en un mensaje embebido. (Admin)
-* !fortune
-  - Open a fortune cookie.
-* !giphy
-  - Show random gifs of the page giphy.com.
-* !minecraft
-  - State of minecraft.net, server information, etc.
-* !level
-  - Show your level and experience.
-* !new (message)
-  - Write a news item on behalf of the server. (Admin)
-* !profile (member)
-  - Show your profile or that of a member.
-* !report (member) (message)
-  - Report a member.
-* !rps
-  - Rock, paper, scissors, lizard, spock.
-* !server
-  - Information about the server.
-* !steam (member)
-  - Show your steam account or another member.
-* !suggerence (message)
-  - Send a suggestion
-* !music (play) (url)
-  - Play Youtube music on a voice channel.
 
 ## Requirements
 - Dedicated Server or VPS
@@ -59,46 +22,30 @@
 
 ## Installation
 ```bash
-# Clone the repository
+# 1. Clone the repository
 $ git clone https://github.com/losdevpath/discord-bot
 
-# Access the folder
+# 2. Access the folder
 $ cd discord-bot
 
-# Install the dependencies
+# 3. Install the dependencies
 $ npm install
 
-# Rename the .example.env file and fill the information.
+# 4. Rename the .example.env file and fill with mysql information.
 $ mv .example.env .env
 
-# Run the bot
+# 5. Create new bot application here
+https://discordapp.com/developers/applications
+
+# 6. Paste the token bot in config.json file
+"bot_token": "[token here]"
+
+# 7. Run the bot
 $ npm run index
 or
 $ node index.js
 or
 $ pm2 start index.js --name "bot-name"
 
-# Create new application bot here
-https://discordapp.com/developers/applications
-
-# Change [CLIENT ID] by the ID of your bot and enter the link to add it to your server
-https://discordapp.com/oauth2/authorize?client_id=[CLIENT ID]&scope=bot&permissions=8
+# 8. Copy bot invite link from console and paste in your browser to invite bot to your server.
 ```
-
-## Images
-<p align="center">
-  <img src="https://i.imgur.com/w5vkUVQ.png"><br>
-  Commands
-</p>
-<p align="center">
-  <img src="https://i.imgur.com/cF6bw7P.png"><br>
-  Youtube music
-</p>
-<p align="center">
-  <img src="https://i.imgur.com/ZOCrNmU.png"><br>
-  Minecraft server information
-</p>
-<p align="center">
-  <img src="https://i.imgur.com/dCfZSE9.png"><br>
-  Welcome message
-</p>
