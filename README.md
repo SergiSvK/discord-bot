@@ -38,7 +38,7 @@ $ mv .example.env .env
 https://discordapp.com/developers/applications
 
 # 6. Paste the token bot in config.json file
-"bot_token": "[token here]"
+"bot_token": "token here"
 
 # 7. Run the bot
 $ npm run index
