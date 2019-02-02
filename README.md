@@ -11,6 +11,8 @@
   <img src="https://img.shields.io/github/downloads/losdevpath/discord-bot/total.svg?style=flat" />
   <img src="https://img.shields.io/github/license/losdevpath/discord-bot.svg?style=flat">
   <img src="https://img.shields.io/github/last-commit/losdevpath/discord-bot.svg?style=flat">
+  <img src="https://img.shields.io/github/stars/losdevpath/discord-bot.svg?style=social">
+  <img src="https://img.shields.io/github/watchers/losdevpath/discord-bot.svg?style=social">
 </p>
 
 ## Requirements
