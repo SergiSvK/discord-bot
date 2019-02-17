@@ -1,158 +1,135 @@
 /*
-*   Discord Bot by LOSDEV
-*   Website: losdev.es
-*   Email: losdevpath@gmail.com
+*   @Author     LOSDEV
+*   @Contact    losdevpath@gmail.com
+*   @Github     https://github.com/losdevpath/discord-bot
+*   @License    https://github.com/losdevpath/discord-bot/blob/master/LICENSE
 */
 const Discord = require("discord.js");
 const request = require('request');
-const steamID = require('steamid');
+const steam_id = require('steamid');
 const moment = require('moment');
 const config = require("../config.json");
-const botinfo = require("../version.json");
-var steamCountries = require('../data/steamcountries.min.json');
+const botinfo = require("../botinfo.json");
+const error = require("../utils/errors.js");
+var steamCountries = require('../utils/steamcountries.min.json');
 
 exports.execute = (bot, message, args) => {
-  var steamIDString;
-
-  if (args.length < 2) {
-    steamIDString = message.author.username;
+  this_cmd = bot.commands.get("steam");
+  let steam_userid;
+  if (!args[1]) {
+    steam_userid = message.author.username;
   } else {
-    steamIDString = args[1];
+    steam_userid = args[1];
   }
-
-  // Comprobar si el comando está activo
-  const cmdActivo = config.steam_activo;
-  if(cmdActivo === "false") { return message.channel.send(`**ERROR:** El comando está desactivado.`); }
-  // Comprobar si se requiere escribir en un canal
-  const requireChannel = config.requerir_canales;
-  if(requireChannel === "true") {
-    // Comprobar si se está escribiendo en el canal específico
-    const cmdChannel = config.canal_comandos;
-    if(cmdChannel !== message.channel.name) {
-      return message.channel.send(`:poop: Escribe el comando en el canal **#${config.canal_comandos}**!`);
-    };
-  }
-
-  // Mostrar error si no hay un id definido
-  if (steamIDString === undefined) {
-    console.error("ERROR: El SteamID no está definido. (undefined)");
-    return;
-  }
-
-  // Convertir en SteamID64
-  request({url: "http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=" + config.steam_apikey + "&vanityurl=" + steamIDString, json: true}, function(error, response, body){
-
-  // Mostrar error si la APIKEY no es válida
-  if (response.statusCode == 403) {
-    console.error("ERROR: La APIKEY no es válida.");
-    message.channel.send("**ERROR*** La API key no es válida. Contacta con un administrador.");
-    return;
-  }
-
-  // Comprobar si el SteamID es un código de 17 dígitos
-  if(/^\d+$/.test(steamIDString) && steamIDString.length == 17) {
-    steamID64 = steamIDString;
-    if(config.debug === "true"){console.log("DEBUG: (SteamID) " + steamID64);}
-  }
-  else if(body.response.success == 1){
-    steamID64 = body.response.steamid;
-    if(config.debug === "true"){console.log("DEBUG: (SteamID) " + steamID64);}
-  }
-  else if((matches = steamIDString.match(/^STEAM_([0-5]):([0-1]):([0-9]+)$/)) || (matches = steamIDString.match(/^\[([a-zA-Z]):([0-5]):([0-9]+)(:[0-9]+)?\]$/))){
-    var SteamID3 = new SteamID(steamIDString);
-    steamID64 = SteamID3.getSteamID64();
-    if(config.debug === "true"){console.log("DEBUG: (SteamID) " + steamID64);}
-  }
-  else {
-    message.channel.send("**ERROR:** No encontramos la cuenta **" + steamIDString + "**.\nPosiblemente el id no sea correcto, el usuario no ha configurado la url de su perfil o tiene su perfil privado.");
-    if(config.debug === "true"){console.error("ERROR: No se encuentra el nombre de usuario: " + steamIDString);}
-    return;
-  }
-
-  // URL con información de steam
-  var urls = ["http://api.steampowered.com/IPlayerService/GetSteamLevel/v1/?key=" + config.steam_apikey + "&steamid=" + steamID64,"http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=" + config.steam_apikey + "&steamids=" + steamID64];
-
-  // Generar todos los datos
-  requestURL(urls, function(response) {
-      steamUserData = {
-          avatar: (JSON.parse(response[urls[1]].body).response.players[0].avatarfull),
-          username: (JSON.parse(response[urls[1]].body).response.players[0].personaname),
-          realname: (JSON.parse(response[urls[1]].body).response.players[0].realname),
-          status : (JSON.parse(response[urls[1]].body).response.players[0].personastate),
-          gameinfo : (JSON.parse(response[urls[1]].body).response.players[0].gameextrainfo),
-          gameid : (JSON.parse(response[urls[1]].body).response.players[0].gameid),
-          lobbysteamid : (JSON.parse(response[urls[1]].body).response.players[0].lobbysteamid),
-          level : (JSON.parse(response[urls[0]].body).response.player_level),
-          timecreated: (JSON.parse(response[urls[1]].body).response.players[0].timecreated),
-          lastlogoff: (JSON.parse(response[urls[1]].body).response.players[0].lastlogoff),
-          loccountrycode: (JSON.parse(response[urls[1]].body).response.players[0].loccountrycode),
-          locstatecode: (JSON.parse(response[urls[1]].body).response.players[0].locstatecode),
-          loccityid: (JSON.parse(response[urls[1]].body).response.players[0].loccityid),
+  /* SteamID64 Converter */
+  request(
+    {
+      url: "http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=" + config.apikey_steam + "&vanityurl=" + steam_userid, 
+      json: true
+    }, function(error, response, body) {
+    /* Check API Key*/
+    if(response.statusCode == 403) {
+      return error.noApiKey(message, "steam");
+    }
+    /* Steam ID Checker */
+    if(/^\d+$/.test(steam_userid) && steam_userid.length == 17) {
+      steamID64 = steam_userid;
+    } else if(body.response.success == 1) {
+      steamID64 = body.response.steamid;
+    } else if((matches = steam_userid.match(/^STEAM_([0-5]):([0-1]):([0-9]+)$/)) || (matches = steam_userid.match(/^\[([a-zA-Z]):([0-5]):([0-9]+)(:[0-9]+)?\]$/))) {
+      var SteamID3 = new SteamID(steam_userid);
+      steamID64 = SteamID3.getSteamID64();
+    } else {
+      return message.channel.send(
+        { embed: {
+            author: {
+              name: this_cmd.info.title,
+              icon_url: this_cmd.config.image
+            },
+            color: this_cmd.config.color,
+            description: `User ${steam_userid} not found. Possibly the user has not configured the url of his profile or has his private profile.`
+          }
+        }
+      );
+    }
+    /* API URL's */
+    var urls = [
+      "http://api.steampowered.com/IPlayerService/GetSteamLevel/v1/?key=" + config.apikey_steam + "&steamid=" + steamID64,
+      "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=" + config.apikey_steam + "&steamids=" + steamID64
+    ];
+    /* Steam user data */
+    requestURL(urls, function(response) {
+      user_data = {
+        avatar: (JSON.parse(response[urls[1]].body).response.players[0].avatarfull),
+        username: (JSON.parse(response[urls[1]].body).response.players[0].personaname),
+        realname: (JSON.parse(response[urls[1]].body).response.players[0].realname),
+        status : (JSON.parse(response[urls[1]].body).response.players[0].personastate),
+        gameinfo : (JSON.parse(response[urls[1]].body).response.players[0].gameextrainfo),
+        gameid : (JSON.parse(response[urls[1]].body).response.players[0].gameid),
+        lobbysteamid : (JSON.parse(response[urls[1]].body).response.players[0].lobbysteamid),
+        level : (JSON.parse(response[urls[0]].body).response.player_level),
+        timecreated: (JSON.parse(response[urls[1]].body).response.players[0].timecreated),
+        lastlogoff: (JSON.parse(response[urls[1]].body).response.players[0].lastlogoff),
+        loccountrycode: (JSON.parse(response[urls[1]].body).response.players[0].loccountrycode),
+        locstatecode: (JSON.parse(response[urls[1]].body).response.players[0].locstatecode),
+        loccityid: (JSON.parse(response[urls[1]].body).response.players[0].loccityid),
       };
-      sendUserEmbedMessage(message, steamUserData);
+      embedProfile(message, user_data);
     });
   });
-  // Construir embed con la información
-  function sendUserEmbedMessage (message, steamUserData){
-    var steamUserEmbed = new Discord.RichEmbed();
-    steamUserEmbed.setAuthor(`STEAM - Perfil de ${steamIDString}`, `https://i.imgur.com/3LNiIBb.png`)
-    steamUserEmbed.setThumbnail(steamUserData.avatar);
-    steamUserEmbed.addField(`Nick`, `${steamUserData.username}`, true );
-    /*if (steamUserData.realname === undefined){
-      steamUserEmbed.addField(`Nombre Real`, `N/A`, true );
-    } else {
-      steamUserEmbed.addField(`Nombre Real`, steamUserData.realname, true );
-    }*/
-    steamUserEmbed.addField(`Nivel`, steamUserData.level, true );
-    switch (steamUserData.status) {
+  /* Embed */
+  function embedProfile (message, user_data) {
+    let steam_embed = new Discord.RichEmbed();
+    steam_embed.setAuthor(`${steam_userid} - Steam Profile Info`, this_cmd.config.image)
+    steam_embed.setThumbnail(user_data.avatar);
+    steam_embed.setColor("#114D7F");
+    steam_embed.addField(`Nick`, user_data.username, true );
+    steam_embed.addField(`Level`, user_data.level, true );
+    /* Status codes */
+    switch(user_data.status) {
       case 0:
-      steamUserEmbed.addField("Estado", "Desconectado", true );
-      steamUserEmbed.setColor(0x747F8D);
+        steam_embed.addField("Status", "Disconnected", true );
       break;
       case 1:
-      steamUserEmbed.addField("Estado", "Conectado", true );
-      steamUserEmbed.setColor(0x2C82EC);
+        steam_embed.addField("Status", "Online", true );
       break;
       case 2:
-      steamUserEmbed.addField("Estado", "Ocupado", true );
-      steamUserEmbed.setColor(0xF04747);
+        steam_embed.addField("Status", "Busy", true );
       break;
       case 3:
-      steamUserEmbed.addField("Estado", "Ausente", true );
-      steamUserEmbed.setColor(0xFAA61A);
+        steam_embed.addField("Status", "AFK", true );
       break;
       case 4:
-      steamUserEmbed.addField("Estado", "Durmiendo", true );
-      steamUserEmbed.setColor(0xFAA61A);
+        steam_embed.addField("Status", "Sleeping", true );
       break;
       case 5:
-      steamUserEmbed.addField("Estado", "Deseando intercambiar", true );
-      steamUserEmbed.setColor(0x2C82EC);
+        steam_embed.addField("Status", "Wishing to exchange", true );
       break;
       case 6:
-      steamUserEmbed.addField("Estado", "Deseando jugar", true );
-      steamUserEmbed.setColor(0x2C82EC);
+        steam_embed.addField("Status", "Wishing to play", true );
       break;
     }
-    if(steamUserData.loccountrycode !== undefined){
-      var loccountryname = steamCountries[steamUserData.loccountrycode].name;
-      steamUserEmbed.addField("País", loccountryname, true );
+    /* Country code */
+    if(user_data.loccountrycode !== undefined) {
+      var loccountryname = steamCountries[user_data.loccountrycode].name;
+      steam_embed.addField("Country", loccountryname, true );
     }
-    if(steamUserData.loccityid !== undefined){
-      var loccountrycode = steamUserData.loccountrycode;
-      var locstatecode = steamUserData.locstatecode;
-      var loccityid = steamUserData.loccityid;
+    /* City code */
+    if(user_data.loccityid !== undefined) {
+      var loccountrycode = user_data.loccountrycode;
+      var locstatecode = user_data.locstatecode;
+      var loccityid = user_data.loccityid;
       var loccityname = steamCountries[loccountrycode].states[locstatecode].cities[loccityid].name;
-      steamUserEmbed.addField("Ciudad", `${loccityname}`, true );
+      steam_embed.addField("City", `${loccityname}`, true );
     }
-    steamUserEmbed.addField("Cuenta creada", moment(new Date(steamUserData.timecreated*1000)).format('DD/MM/YYYY'), true );
-    steamUserEmbed.addField("Última conexión", moment(new Date(steamUserData.lastlogoff*1000)).format('DD/MM/YYYY, h:mm a'), true );
-    if(steamUserData.gameinfo !== undefined){
-      steamUserEmbed.addField("Jugando a", steamUserData.gameinfo);
-      steamUserEmbed.setColor(0x43B581);
+    steam_embed.addField("Account created", moment(new Date(user_data.timecreated*1000)).format('DD/MM/YYYY'), true );
+    steam_embed.addField("Last connection", moment(new Date(user_data.lastlogoff*1000)).format('DD/MM/YYYY, h:mm a'), true );
+    if(user_data.gameinfo !== undefined) {
+      steam_embed.addField("Playing", user_data.gameinfo);
+      
     }
-    steamUserEmbed.setFooter(`${botinfo.nombre} v${botinfo.version}`, botinfo.imagen);
-    message.channel.send({embed: steamUserEmbed});
+    steam_embed.addField("Profile", `[${steam_userid}](https://steamcommunity.com/id/${steam_userid})`, true);
+    return message.channel.send(steam_embed);
   }
   function requestURL(urls, callback) {
     'use strict';
@@ -166,12 +143,22 @@ exports.execute = (bot, message, args) => {
   }
 }
 
-exports.info = {
+exports.config = {
   name: "steam",
-  alias: ["steaminfo", "steaminf"],
-  permission: "default",
-  type: "general",
-  guildOnly: true,
-  description: "Muestra tu cuenta de steam o de otro miembro.",
-  usage: "steam [usuario]"
+  aliases: ["stm"],
+  permission: "member",
+  type: "command_channel",
+  color: "1133951",
+  image: "https://i.imgur.com/3LNiIBb.png",
+  guild_only: true,
+  enabled: true,
+};
+
+exports.info = {
+  title: "Steam",
+  description: "Profile info of steam.",
+  usage: [
+    `\`${config.bot_prefix}steam\` - Profile info of steam user.`,
+    `\`${config.bot_prefix}steam (user)\` - Profile info of other steam user.`
+  ]
 };

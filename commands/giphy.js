@@ -1,57 +1,75 @@
 /*
-*   Discord Bot by LOSDEV
-*   Website: losdev.es
-*   Email: losdevpath@gmail.com
+*   @Author     LOSDEV
+*   @Contact    losdevpath@gmail.com
+*   @Github     https://github.com/losdevpath/discord-bot
+*   @License    https://github.com/losdevpath/discord-bot/blob/master/LICENSE
 */
-const config = require("../config.json");
-const botinfo = require("../version.json");
-const errors = require("../bot_utils/errores.js");
 const Discord = require("discord.js");
-const giphy = require('giphy-api')(config.giphy_apikey);
+const config = require("../config.json");
+const error = require("../utils/errors.js");
+const giphy = require('giphy-api')(config.apikey_giphy);
 
 exports.execute = (bot, message, args, con) => {
-  // Comprobar si el comando está activo
-  let cmdActivo = config.giphy_activo;
-  if(cmdActivo === "false") { return message.channel.send(`**ERROR:** El comando está desactivado.`); }
-  // Comprobar si se requiere escribir en un canal
-  let requireChannel = config.requerir_canales;
-  if(requireChannel === "true") {
-    // Comprobar si se está escribiendo en el canal específico
-    let cmdChannel = config.canal_gifs;
-    if(cmdChannel !== message.channel.name) {
-      return message.channel.send(`:poop: Escribe el comando en el canal **#${config.canal_gifs}**!`);
-    };
+  let this_cmd = bot.commands.get("giphy");
+  if(!config.apikey_giphy) {
+    return error.noApiKey(message, "giphy");
   }
-  if (args.length < 2) {
-    // Gif random
+  if(!args[1]) {
     giphy.random().then(function (res) {
-      let randomGif = new Discord.RichEmbed()
-      .setAuthor(`GIF RANDOM - giphy.com`, `https://i.imgur.com/NTG7tnV.png`)
-      .setColor("#747474")
-      .setImage(res.data.images.original.url)
-      .setFooter(`${botinfo.nombre} v${botinfo.version}`, botinfo.imagen);
-      message.channel.send(randomGif);
+      return message.channel.send(
+        { embed: {
+            author: {
+              name: `Random Gif - giphy.com`,
+              icon_url: this_cmd.config.image
+            },
+            color: this_cmd.config.color,
+            image: {
+              url: res.data.images.original.url
+            }
+          }
+        }
+      );
     });
   } else {
-    // Gif random con palabra
-    var tagGif = args[1];
-    giphy.random(tagGif).then(function (res) {
-      let randomGif = new Discord.RichEmbed()
-      .setAuthor(`GIF RANDOM (${tagGif}) - giphy.com`, `https://i.imgur.com/NTG7tnV.png`)
-      .setColor("#747474")
-      .setImage(res.data.images.original.url)
-      .setFooter(`${botinfo.nombre} v${botinfo.version}`, botinfo.imagen);
-      message.channel.send(randomGif);
+    var gif_tag = args[1];
+    giphy.random(gif_tag).then(function (res) {
+      if(!res.data.images) {
+        return error.gifsNotFound(message, gif_tag);
+      } else {
+        return message.channel.send(
+          { embed: {
+              author: {
+                name: `Random Gif (${gif_tag}) - giphy.com`,
+                icon_url: this_cmd.config.image
+              },
+              color: this_cmd.config.color,
+              image: {
+                url: res.data.images.original.url
+              }
+            }
+          }
+        );
+      }
     });
   }
 }
 
-exports.info = {
+exports.config = {
   name: "giphy",
-  alias: ["gif"],
-  permission: "default",
-  type: "general",
-  guildOnly: true,
-  description: "Muestra gifs random de la página giphy.com.",
-  usage: "gif (texto)"
+  aliases: ["gp", "gif"],
+  permission: "member",
+  type: "command_channel",
+  color: "16737894",
+  image: "https://i.imgur.com/NTG7tnV.png",
+  guild_only: true,
+  enabled: true,
+};
+
+exports.info = {
+  title: "Random Gifs",
+  description: "Show gifs from giphy.com.",
+  usage: [
+    `\`${config.bot_prefix}gyphy\` - Random gif from giphy.com.`,
+    `\`${config.bot_prefix}gyphy (text)\` - Random gif from giphy.com.`
+  ]
 };

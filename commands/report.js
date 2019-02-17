@@ -1,61 +1,141 @@
 /*
-*   Discord Bot by LOSDEV
-*   Website: losdev.es
-*   Email: losdevpath@gmail.com
+*   @Author     LOSDEV
+*   @Contact    losdevpath@gmail.com
+*   @Github     https://github.com/losdevpath/discord-bot
+*   @License    https://github.com/losdevpath/discord-bot/blob/master/LICENSE
 */
 const Discord = require("discord.js");
 const dateFormat = require('dateformat');
-const CodeGenerator = require('node-code-generator');
+const codegen = require('node-code-generator');
 const config = require("../config.json");
-const botinfo = require("../version.json");
-const errors = require("../bot_utils/errores.js");
-var now = new Date();
+const botinfo = require("../botinfo.json");
+const mysql = require("mysql");
+const error = require("../utils/errors.js");
+const now = new Date();
 
-exports.execute = (bot, message, args) => {
-  // Comprobar si el comando está activo
-  let cmdActivo = config.reportes_activo;
-  if(cmdActivo === "false") { return message.channel.send(`**ERROR:** El comando está desactivado.`); }
-  // Comprobar si se requiere escribir en un canal
-  let requireChannel = config.requerir_canales;
-  if(requireChannel === "true") {
-    // Comprobar si se está escribiendo en el canal específico
-    let cmdChannel = config.canal_comandos;
-    if(cmdChannel !== message.channel.name)return message.channel.send(`:poop: Escribe el comando en el canal **#${config.canal_comandos}**!`);
+exports.execute = (bot, message, args, con) => {
+  this_cmd = bot.commands.get("report");
+  /* Command info */
+  if(!message.mentions.users.first()) {
+    return message.channel.send(
+      { embed: {
+          author: {
+            name: this_cmd.info.title,
+            icon_url: this_cmd.config.image
+          },
+          color: this_cmd.config.color,
+          description: `${this_cmd.info.description}\n\n${this_cmd.info.usage.join('\n')}`
+        }
+      }
+    );
   }
-  if (args.length < 3) return message.channel.send(`:poop: Debes escribir un reporte. Uso: ${config.prefijo}reportar @usuario (mensaje)`);
-  let fecha = dateFormat(now, "dd/mm/yyyy h:MM:ss TT");
-  let codigo = generarCodigo();
-  let reportUser = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
-  if(!reportUser) return message.channel.send(":poop: No has escrito el usuario correctamente.");
-  let reportReason = args.join(" ").slice(args[0].length + args[1].length + 1);
-  let reportEmbed = new Discord.RichEmbed()
-  .setAuthor(`REPORTE #${codigo}`)
-  .setColor("#d52d2d")
-  .addField("Usuario Reportado", reportUser, true)
-  .addField("ID del usuario", reportUser.id, true)
-  .addField("Razón", reportReason)
-  .setFooter(`Enviado por ${message.author.username} - ${fecha}`);
-  let reportsChannel = message.guild.channels.find("name", config.canal_reportes);
-  if(!reportsChannel) return;
-  message.delete().catch(O_o=>{});
-  reportsChannel.send(reportEmbed);
+  function codeGenerator(num) {
+    var gen = new codegen();
+    var pattern = '######';
+    var options = {};
+    var code = gen.generateCodes(pattern, num, options);
+    return code;
+  }
+  /* Report data */
+  let date = dateFormat(now, config.server_date_format);
+  let code = codeGenerator(1);
+  let user_reported = message.mentions.users.first();
+  let report_channel = message.guild.channels.find(channel => channel.id === config.channel_reports);
+  if(!report_channel) return error.channelNotSet(message, "reports");
+  args.shift();
+  args.shift();
+  let report_reason = args.join(" ");
+  message.delete().catch();
+  /* Message to reports channel */
+  report_channel.send(
+    { embed: {
+        author: {
+          name: `New Report - #${code}`,
+          icon_url: `https://i.imgur.com/TbjO54r.png`
+        },
+        color: this_cmd.config.color,
+        fields: [
+          {
+            name: "Reported User",
+            value: `${user_reported}`,
+            inline: true
+          },
+          {
+            name: "Reported by",
+            value: `${message.author}`,
+            inline: true
+          },
+          {
+            name: "Date",
+            value: `\`${date}\``,
+            inline: true
+          },
+          {
+            name: "Reason",
+            value: `\`\`\`${report_reason}\`\`\``
+          }
+        ]
+      }
+    }
+  );
+  /* Message to author */
+  message.author.send(
+    { embed: {
+        author: {
+          name: `Report sent to staff!`,
+          icon_url: `https://i.imgur.com/TbjO54r.png`
+        },
+        description: `Your report has been sent to staff. This is a copy of your report. The staff will contact you to obtain more information if necessary. Report code: \`#${code}\``,
+        color: this_cmd.config.color,
+        fields: [
+          {
+            name: "Reported User",
+            value: `${user_reported}`,
+            inline: true
+          },
+          {
+            name: "Report ID",
+            value: `\`#${code}\``,
+            inline: true
+          },
+          {
+            name: "Date",
+            value: `\`${date}\``,
+            inline: true
+          },
+          {
+            name: "Reason",
+            value: `\`\`\`${report_reason}\`\`\``
+          }
+        ]
+      }
+    }
+  );
+  con.query(`SELECT * FROM users WHERE uid='${user_reported.id}' AND server='${message.guild.id}'`, (err, rows) =>{
+    if(err) throw err;
+    let sql;
+    reports = rows[0].reports + 1;
+    sql = `UPDATE users SET reports=${reports} WHERE uid='${user_reported.id}' AND server='${message.guild.id}'`;
+    con.query(sql);
+    return;
+  });
 }
 
-function generarCodigo(){
-  var generator = new CodeGenerator();
-  var pattern = '######';
-  var howMany = 1;
-  var options = {};
-  var code = generator.generateCodes(pattern, howMany, options);
-  return code;
-}
+exports.config = {
+  name: "report",
+  aliases: ["rep"],
+  permission: "member",
+  type: "command_channel",
+  color: "14833484",
+  image: "https://i.imgur.com/XOjySNh.png",
+  guild_only: true,
+  enabled: true,
+};
 
 exports.info = {
-  name: "reportar",
-  alias: ["report"],
-  permission: "default",
-  type: "general",
-  guildOnly: true,
-  description: "Reporta a un miembro del servidor.",
-  usage: "reportar @usuario (razón)"
+  title: "Reports",
+  description: "Report a member.",
+  usage: [
+    `\`${config.bot_prefix}report @member (reason)\` - Report a member.`
+  ]
 };

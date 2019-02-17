@@ -1,49 +1,72 @@
 /*
-*   Discord Bot by LOSDEV
-*   Website: losdev.es
-*   Email: losdevpath@gmail.com
+*   @Author     LOSDEV
+*   @Contact    losdevpath@gmail.com
+*   @Github     https://github.com/losdevpath/discord-bot
+*   @License    https://github.com/losdevpath/discord-bot/blob/master/LICENSE
 */
 const Discord = require("discord.js");
 const config = require("../config.json");
-const botinfo = require("../version.json");
-const bolamagicaRespuestas = require("../bot_data/bolamagica.json");
-const cdBolaMagica = new Set();
+const lang = require(`../langs/${config.server_lang}.json`);
+const responses = require("../data/8ball_"+config.server_lang+".json");
 
-exports.execute = (bot, message, args) => {
-  // Comprobar si el comando está activo
-  let cmdActivo = config.bolamagica_activo;
-  if(cmdActivo === "false") { return message.channel.send(`**ERROR:** El comando está desactivado.`); }
-  // Comprobar si se requiere escribir en un canal
-  let requireChannel = config.requerir_canales;
-  if(requireChannel === "true") {
-    // Comprobar si se está escribiendo en el canal específico
-    let cmdChannel = config.canal_comandos;
-    if(cmdChannel !== message.channel.name) return message.channel.send(`:poop: Escribe el comando en el canal **#${config.canal_comandos}**!`);
+exports.execute = (bot, message, args, con) => {
+  let this_cmd = bot.commands.get("8ball");
+  /* Command info */
+  if(!args[1]) {
+    return message.channel.send(
+      { embed: {
+          author: {
+            name: this_cmd.info.title,
+            icon_url: this_cmd.config.image
+          },
+          color: this_cmd.config.color,
+          description: `${this_cmd.info.description}\n\n${this_cmd.info.usage.join('\n')}`
+        }
+      }
+    );
   }
-  if (cdBolaMagica.has(message.author.id)) return message.channel.send(`:poop: Debes esperar 5 minutos para volver a hacer otra pregunta!`);
-  if (args.length < 2) return message.channel.send('🔮 Debes hacerle una pregunta a la bola mágica!');
-  var respuestas = bolamagicaRespuestas;
-  let mensajeRandom = respuestas[Math.floor(Math.random() * respuestas.length)];
-  const preguntaUser = args.join(' ').slice(args[0].length);
-  let bolaMagica = new Discord.RichEmbed()
-  .setAuthor(`BOLA MÁGICA`, `https://i.imgur.com/1s6xECe.png`)
-  .setThumbnail(`https://i.imgur.com/1s6xECe.png`)
-  .setColor("#6bc1ff")
-  .addField(`Pregunta de ${message.author.username}`, preguntaUser)
-  .addField(`La bola mágica dice...`,`${mensajeRandom}`)
-  .setFooter(`${botinfo.nombre} v${botinfo.version}`, botinfo.imagen);
-  message.channel.send(`**${message.author.username}** ha preguntado a la bola mágica!`);
-  message.channel.send(bolaMagica);
-  cdBolaMagica.add(message.author.id);
-  setTimeout(() => {cdBolaMagica.delete(message.author.id);},300000);
+  let randomMessage = responses[Math.floor(Math.random() * responses.length)];
+  const userQuestion = args.join(' ').slice(args[0].length);
+  message.channel.send(
+    { embed: {
+      author: {
+        name: `Magic Ball`,
+        icon_url: this_cmd.config.image
+      },
+      color: this_cmd.config.color,
+      thumbnail: {
+        url: this_cmd.config.image
+      },
+      fields: [
+          {
+            name: `Question of ${message.author.username}`,
+            value: userQuestion
+          },
+          {
+            name: `The magic ball says...`,
+            value: `${randomMessage}`
+          }
+        ]
+      }
+    }
+  )
 }
 
-exports.info = {
+exports.config = {
   name: "8ball",
-  alias: ["bolamagica", "bm", "8b"],
-  permission: "default",
-  type: "general",
-  guildOnly: true,
-  description: "Haz una pregunta a la bola mágica.",
-  usage: "bm (pregunta)"
+  aliases: ["8b"],
+  permission: "member",
+  type: "command_channel",
+  color: "7062015",
+  image: "https://i.imgur.com/1s6xECe.png",
+  guild_only: true,
+  enabled: true,
+};
+
+exports.info = {
+  title: "Magic Ball",
+  description: "Ask the magic ball a question.",
+  usage: [
+    `\`${config.bot_prefix}8ball (question)\` - Ask to the magic ball.`
+  ]
 };

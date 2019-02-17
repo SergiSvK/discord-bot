@@ -1,55 +1,104 @@
 /*
-*   Discord Bot by LOSDEV
-*   Website: losdev.es
-*   Email: losdevpath@gmail.com
+*   @Author     LOSDEV
+*   @Contact    losdevpath@gmail.com
+*   @Github     https://github.com/losdevpath/discord-bot
+*   @License    https://github.com/losdevpath/discord-bot/blob/master/LICENSE
 */
 const Discord = require("discord.js");
 const mysql = require("mysql");
 const config = require("../config.json");
-const botinfo = require("../version.json");
+const botinfo = require("../botinfo.json");
 
 exports.execute = (bot, message, args, con) => {
-  // Comprobar si el comando está activo
-  let cmdActivo = config.nivel_activo;
-  if(cmdActivo === "false") { return message.channel.send(`**ERROR:** El comando está desactivado.`); }
-  // Comprobar si se requiere escribir en un canal
-  let requireChannel = config.requerir_canales;
-  if(requireChannel === "true") {
-    // Comprobar si se está escribiendo en el canal específico
-    let cmdChannel = config.canal_comandos;
-    if(cmdChannel !== message.channel.name) {
-      return message.channel.send(`:poop: Escribe el comando en el canal **#${config.canal_comandos}**!`);
-    };
+  let this_cmd = bot.commands.get("level");
+  /* Experience Generator */
+  function expGen(level) {
+    let max = level * 30;
+    let min = level * 20;
+    return Math.floor(Math.random() * (max - min) ) + min;
   }
-  // Conexión a la base de datos y comprobar datos
-  con.query(`SELECT * FROM usuarios WHERE id='${message.author.id}' and servidor='${message.guild.id}'`, (err, rows) =>{
+  /* Member level */
+  function memberLevel(rows, rank) {
+    /* db data */
+    let db_level = rows[0].level;
+    let db_exp = rows[0].exp;
+    /* Multiplier next level */
+    let multiplier = 30;
+    let level_mult = 5;
+    if(db_level >= 10) { multiplier = 50; level_mult = 10; }
+    if(db_level >= 20) { multiplier = 70; level_mult = 15; }
+    if(db_level >= 30) { multiplier = 90; level_mult = 20; }
+    if(db_level >= 40) { multiplier = 110; level_mult = 25; }
+    if(db_level >= 50) { multiplier = 130; level_mult = 30; }
+    if(db_level >= 60) { multiplier = 150; level_mult = 35; }
+    if(db_level >= 70) { multiplier = 170; level_mult = 40; }
+    if(db_level >= 80) { multiplier = 190; level_mult = 45; }
+    if(db_level >= 90) { multiplier = 210; level_mult = 50; }
+    if(db_level >= 100) { multiplier = 230; level_mult = 55; }
+    let exp_to_next_level = multiplier * (db_level * level_mult);
+    let dif_exp = exp_to_next_level - db_exp;
+    message.channel.send(
+      { embed: {
+          author: {
+            name: `${message.author.username} | Level`,
+            icon_url: this_cmd.config.image
+          },
+          color: this_cmd.config.color,
+          thumbnail: {
+            url: `https://i.imgur.com/mrxA1w4.png`
+          },
+          fields: [
+            {
+              name: `Level`,
+              value: `${db_level}`,
+              inline: true
+            },
+            {
+              name: `Rank`,
+              value: `#${rank}`,
+              inline: true
+            },
+            {
+              name: `Experience`,
+              value: `${db_exp}/${exp_to_next_level}xp`,
+              inline: true
+            },
+            {
+              name: `Exp to next level`,
+              value: `${dif_exp}xp`,
+              inline: true
+            }
+          ]
+        }
+      }
+    );
+  }
+  con.query(`SELECT * FROM users WHERE uid='${message.author.id}' and server='${message.guild.id}'`, (err, rows1) => {
     if(err) throw err;
-    let sql;
-    if(rows.length < 1) {
-      sql = `INSERT INTO usuarios (id, exp, nivel, servidor) VALUES ('${message.author.id}', '${generateXp()}', '1', '${message.guild.id}')`;
-      con.query(sql);
-    }
-    let currentExp = rows[0].exp;
-    let currentLvl = rows[0].nivel;
-    let nextLvl = currentLvl + 1;
-    let nextLvlXp = currentLvl * 300;
-    let diffExp = nextLvlXp - currentExp;
-    let lvlEmbed = new Discord.RichEmbed()
-    .setAuthor(`Nivel de ${message.author.username}`)
-    .setThumbnail(message.author.displayAvatarURL)
-    .setColor("#ffc700")
-    .setDescription(`Actualmente eres **Nivel ${currentLvl}**, y tienes **${currentExp}/${nextLvlXp}xp**.\nPara alcanzar el **Nivel ${nextLvl}**, necesitas **${diffExp}xp**.\n\n*Sigue participando para desbloquear más funciones!*`)
-    .setFooter(`${botinfo.nombre} v${botinfo.version}`, botinfo.imagen);
-    message.channel.send(lvlEmbed);
+    con.query("SET @rownum := 0");
+    con.query(`SELECT rank, level FROM ( SELECT @rownum := @rownum + 1 AS rank, level, id FROM users ORDER BY level DESC ) AS result WHERE id=${rows1[0].id}`, (err, rows2) => {
+      if(err) throw err;
+      let rank = rows2[0].rank;
+      memberLevel(rows1, rank);
+    });
   });
 }
 
+exports.config = {
+  name: "level",
+  aliases: ["lvl"],
+  permission: "member",
+  type: "command_channel",
+  color: "8729855",
+  image: "https://i.imgur.com/QdZhjdc.png",
+  guild_only: true,
+  enabled: true,
+};
+
 exports.info = {
-  name: "nivel",
-  alias: ["level", "lvl"],
-  permission: "default",
-  type: "general",
-  guildOnly: true,
-  description: "Muestra tu nivel y experiencia.",
-  usage: "nivel"
+  title: "Level",
+  description: "Show level and experience.",
+  usage: [
+    `\`${config.bot_prefix}level\` - Show level and experience.`
+  ]
 };

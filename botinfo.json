@@ -1,0 +1,11 @@
+{
+  "__BOT_INFO__": "Information about the author and bot.",
+  "bot_name": "Discord Bot",
+  "bot_image": "https://i.imgur.com/nfO6h2j.png",
+  "bot_version": "3.1.68",
+  "bot_author": "LOSDEV",
+  "bot_github": "https://github.com/losdevpath/discord-bot",
+  "bot_website": "https://losdev.es/",
+  "bot_contact": "losdevpath@gmail.com",
+  "bot_description": "This bot can be used by anyone on its own server. You can modify it, use it, sell it, or anything. The author of this bot does not ensure its functioning and is not responsible for possible errors, bugs or modifications."
+}

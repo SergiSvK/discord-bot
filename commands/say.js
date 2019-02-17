@@ -5,11 +5,11 @@
 *   @License    https://github.com/losdevpath/discord-bot/blob/master/LICENSE
 */
 const Discord = require("discord.js");
-const errors = require("../utils/errors.js");
+const error = require("../utils/errors.js");
 const config = require("../config.json");
 
 exports.execute = (bot, message, args, con) => {
-  let this_cmd = bot.commands.get("embed");
+  this_cmd = bot.commands.get("say");
   /* Command info */
   if(!args[1]) {
     return message.channel.send(
@@ -24,33 +24,26 @@ exports.execute = (bot, message, args, con) => {
       }
     );
   }
-  const embed_message = args.join(" ").slice(args[0].length);
+  const say_message = args.join(" ").slice(args[0].length);
   message.delete().catch();
-  message.channel.send(
-    { embed: 
-      { 
-        description: embed_message,
-        color: this_cmd.config.color
-      }
-    }
-  );
+  message.channel.send(say_message);
 }
 
 exports.config = {
-  name: "embed",
-  aliases: ["eb"],
-  permission: "staff",
+  name: "say",
+  aliases: ["sy"],
+  permission: "admin",
   type: "global",
-  color: "14263645",
-  image: "https://i.imgur.com/nfO6h2j.png",
+  color: config.bot_color,
+  image: config.bot_avatar,
   guild_only: true,
   enabled: true,
 };
 
 exports.info = {
-  title: "Embed Message",
-  description: "Create a embed message.",
+  title: "Say",
+  description: "Make the bot write a message.",
   usage: [
-    `\`${config.bot_prefix}embed (message)\` - Create a embed message.`
+    `\`${config.bot_prefix}say (message)\` - Write a message.`
   ]
 };

@@ -1,0 +1,21 @@
+{
+  "title": "Auto Roles",
+  "color": "10447041",
+  "description": "Auto assign roles with reactions!",
+  "roles": {
+    "0": {
+      "title": "role1",
+      "description": "This is a role1!",
+      "id_role": "id-role1",
+      "level_required": "1",
+      "color": "color-role1"
+    },
+    "1": {
+      "title": "role2",
+      "description": "This is a role2!",
+      "id_role": "id-role2",
+      "level_required": "2",
+      "color": "color-role2"
+    }
+  }
+}
