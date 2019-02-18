@@ -87,7 +87,7 @@ exports.config = {
 };
 
 exports.info = {
-  title: "Bot Information",
+  title: "Bot Options",
   description: "Modify bot options.",
   usage: [
     `\`${config.bot_prefix}bot avatar (url)\` - Change bot avatar.`,
