@@ -48,3 +48,25 @@ or
 $ node index.js
 or
 $ pm2 start index.js --name "bot-name"
+```
+
+## Commands
+| Prefix | Config |
+| ------ | ------ | 
+| ! | You can modify prefix in config.json -> "bot_prefix": "!" |
+| Command | Aliases | Description | Permission | Usage
+| ------ | ------ | ------ | ------ | ------ |
+| !4chan | !4c | Random images from 4chan.org | member | !4chan (list/board) |
+| !8ball | !8b | Ask the magic ball a question. | member | !8ball (question) |
+| !ban | !bh | Ban a member. | staff | !ban @member (reason) |
+| !bot | !b | Change bot options | admin | !bot |
+| !botinfo | !b | Information about the bot and author. | member | !botinfo |
+| !channelinfo | !chan | Information about the channel. | member | !channelinfo (channel-name) |
+| !clearchat | !cc | Clear messages of chat. | staff | !clearchat (number) |
+| !commands | !c | Show all command list. | member |  !commands |
+| !embed | !emb | Create an embed message. | staff |  !embed (message) |
+| !fortune | !f | Open a fortune cookie. | member |  !fortune |
+| !giphy | !g | Show gifs from giphy.com. | member |  !giphy (text) |
+| !leaderboard | !lb | Show member leaderboards. | member |  !leaderboard |
+| !level | !lvl | Show level and experience. | member |  !level |
+| !selfroles | !sr | Auto asignation of roles with reaction. | admin |  !selfroles |
