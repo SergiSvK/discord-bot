@@ -47,3 +47,4 @@ $ npm run index
 or
 $ node index.js
 or
+$ pm2 start index.js --name "bot-name"
