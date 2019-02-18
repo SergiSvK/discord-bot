@@ -76,8 +76,8 @@ exports.execute = (bot, message, args, con) => {
 }
 
 exports.config = {
-  name: "botinfo",
-  aliases: ["binfo"],
+  name: "bot",
+  aliases: ["bt"],
   permission: "member",
   type: "command_channel",
   color: "59343",
@@ -88,8 +88,9 @@ exports.config = {
 
 exports.info = {
   title: "Bot Information",
-  description: "Information about the bot and author.",
+  description: "Modify bot options.",
   usage: [
-    `\`${config.bot_prefix}botinfo\` - Bot information.`
+    `\`${config.bot_prefix}bot avatar (url)\` - Change bot avatar.`,
+    `\`${config.bot_prefix}bot activity (1/2/3/4) (message)\` - Change bot activity.`,
   ]
 };
