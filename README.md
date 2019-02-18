@@ -52,9 +52,9 @@ $ pm2 start index.js --name "bot-name"
 
 ## Commands
 | Prefix | Config |
-| ------ | ------ | 
+| ------ | ------ |
 | ! | You can modify prefix in config.json -> "bot_prefix": "!" |
-| Command | Aliases | Description | Permission | Usage
+| Command | Aliases | Description | Permission | Usage |
 | ------ | ------ | ------ | ------ | ------ |
 | !4chan | !4c | Random images from 4chan.org | member | !4chan (list/board) |
 | !8ball | !8b | Ask the magic ball a question. | member | !8ball (question) |
