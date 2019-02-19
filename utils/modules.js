@@ -134,8 +134,8 @@ module.exports.levelingSystem = (message, con) => {
 /* Anti discord invites */
 module.exports.antiDiscordInvites = (message, con) => {
     moduleActive('antidiscordinvies');
-    if(message.author.hasPermission("ADMINISTRATOR") || message.author.hasPermission("MANAGE_CHANNELS")) return;
     if(/(?:https?:\/)?discord(?:app.com\/invite|.gg)/gi.test(message.content)) {
+        if(message.member.hasPermission("ADMINISTRATOR") || message.member.hasPermission("MANAGE_CHANNELS")) return;
         message.delete();
         let code = codeGenerator(1);
         let now = new Date();
