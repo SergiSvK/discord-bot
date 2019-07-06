@@ -68,14 +68,14 @@ module.exports.levelingSystem = (message, con) => {
         chan.send(
         { embed: {
             author: {
-                name: `Level Up!`,
+                name: `${lang.level_levelup_title}`,
                 icon_url: "https://i.imgur.com/7F2auUo.png"
             },
             thumbnail: {
                 url: "https://i.imgur.com/4gIcukH.png"
             },
             color: 16759296,
-            description: `**${message.author.username}** have reached **Level ${level}**!\nHas won **${config.server_money_sign}${money}** for level up!`,
+            description: `**${message.author.username}** ${lang.level_reached} **${lang.level_level} ${level}**!\n${lang.level_won} **${config.server_money_sign}${money}** ${lang.level_levelup}`,
         }}).then(function (message) {
             message.react("⚡")
         });
@@ -134,8 +134,8 @@ module.exports.levelingSystem = (message, con) => {
 /* Anti discord invites */
 module.exports.antiDiscordInvites = (message, con) => {
     moduleActive('antidiscordinvies');
+    if(message.member.hasPermission("ADMINISTRATOR") || message.member.hasPermission("MANAGE_CHANNELS")) return;
     if(/(?:https?:\/)?discord(?:app.com\/invite|.gg)/gi.test(message.content)) {
-        if(message.member.hasPermission("ADMINISTRATOR") || message.member.hasPermission("MANAGE_CHANNELS")) return;
         message.delete();
         let code = codeGenerator(1);
         let now = new Date();
@@ -147,29 +147,29 @@ module.exports.antiDiscordInvites = (message, con) => {
                 reports_chan.send(
                     { embed: {
                         author: {
-                            name: `Member has been banned! - Watch Dog`,
+                            name: `${lang.watchdog_banned_title} - ${lang.watchdog_title}`,
                             icon_url: "https://i.imgur.com/LGV2lqb.png"
                         },
                         color: 12483925,
                         fields: [
                             {
-                                name: "Member",
+                                name: `${lang.watchdog_member}`,
                                 value: `${message.author}`,
                                 inline: true
                             },
                             {
-                                name: "Date",
+                                name: `${lang.watchdog_date}`,
                                 value: `${date}`,
                                 inline: true
                             },
                             {
-                                name: "Ban ID",
+                                name: `${lang.watchdog_banid}`,
                                 value: `\`#${code}\``,
                                 inline: true
                             },
                             {
-                                name: "Ban reason",
-                                value: `\`\`\`Has reached the limit of warns (${warns}/${config.server_warns_to_ban}).\`\`\``
+                                name: `${lang.watchdog_reason}`,
+                                value: `\`\`\`${lang.watchdog_warn_limit} (${warns}/${config.server_warns_to_ban}).\`\`\``
                             }
                         ]
                     }
@@ -179,24 +179,24 @@ module.exports.antiDiscordInvites = (message, con) => {
                 activity_chan.send(
                     { embed: {
                         author: {
-                            name: `Member has been banned! - Watch Dog`,
+                            name: `${lang.watchdog_banned_title} - ${lang.watchdog_title}`,
                             icon_url: "https://i.imgur.com/LGV2lqb.png"
                         },
                         color: 12483925,
                         fields: [
                             {
-                                name: "Member",
+                                name: `${lang.watchdog_member}`,
                                 value: `${message.author}`,
                                 inline: true
                             },
                             {
-                                name: "Warns",
+                                name: `${lang.watchdog_warns}`,
                                 value: `${warns}/${config.server_warns_to_ban}`,
                                 inline: true
                             },
                             {
-                                name: "Ban reason",
-                                value: `Has reached the limit of warns.`,
+                                name: `${lang.watchdog_reason}`,
+                                value: `${lang.watchdog_warn_limit}`,
                                 inline: true
                             }
                         ]
@@ -206,30 +206,30 @@ module.exports.antiDiscordInvites = (message, con) => {
             message.author.send(
                 { embed: {
                     author: {
-                        name: `You has been banned! - Watch Dog`,
+                        name: `${lang.watchdog_you_banned_title} - ${lang.watchdog_title}`,
                         icon_url: "https://i.imgur.com/LGV2lqb.png"
                     },
                     color: 12483925,
-                    description: `You has been reaching the limit of warns.`,
+                    description: `${lang.watchdog_you_warn_limit}`,
                     fields: [
                         {
-                            name: "Ban ID",
+                            name: `${lang.watchdog_banid}`,
                             value: `\`#${code}\``,
                             inline: true
                         },
                         {
-                            name: "Warns",
+                            name: `${lang.watchdog_warns}`,
                             value: `${warns}/${config.server_warns_to_ban}`,
                             inline: true
                         },
                         {
-                            name: "Date",
+                            name: `${lang.watchdog_date}`,
                             value: `\`${date}\``,
                             inline: true
                         },
                         {
-                            name: "Ban reason",
-                            value: `\`\`\`You has been banned from ${message.guild.name} for reaching the limit of warns.\`\`\``
+                            name: `${lang.watchdog_reason}`,
+                            value: `\`\`\`${lang.watchdog_you_banned_from} ${message.guild.name} ${lang.watchdog_you_banned_from_2}\`\`\``
                         }
                     ]
                 }
@@ -243,43 +243,43 @@ module.exports.antiDiscordInvites = (message, con) => {
                 reports_chan.send(
                     { embed: {
                         author: {
-                            name: `Member has been warned! - Watch Dog`,
+                            name: `${lang.watchdog_banned_title} - ${lang.watchdog_title}`,
                             icon_url: "https://i.imgur.com/LGV2lqb.png"
                         },
                         color: 12483925,
                         fields: [
                             {
-                                name: "Member",
+                                name: `${lang.watchdog_member}`,
                                 value: `${message.author}`,
                                 inline: true
                             },
                             {
-                                name: "Warns",
+                                name: `${lang.watchdog_warns}`,
                                 value: `${warns}/${config.server_warns_to_ban}`,
                                 inline: true
                             },
                             {
-                                name: "Date",
+                                name: `${lang.watchdog_date}`,
                                 value: `\`${date}\``,
                                 inline: true
                             },
                             {
-                                name: "Channel",
+                                name: `${lang.watchdog_channel}`,
                                 value: `\`${message.channel.name}\``,
                                 inline: true
                             },
                             {
-                                name: "Warn ID",
+                                name: `${lang.watchdog_warnid}`,
                                 value: `\`#${code}\``,
                                 inline: true
                             },
                             {
-                                name: "Warn reason",
-                                value: `Spam an invitation link.`,
+                                name: `${lang.watchdog_warn_reason}`,
+                                value: `${lang.watchdog_spam_invite_link}`,
                                 inline: true
                             },
                             {
-                                name: "Message",
+                                name: `${lang.watchdog_message}`,
                                 value: `\`\`\`${message.content}\`\`\``
                             },
                         ]
@@ -290,24 +290,24 @@ module.exports.antiDiscordInvites = (message, con) => {
                 activity_chan.send(
                     { embed: {
                         author: {
-                            name: `Member has been warned! - Watch Dog`,
+                            name: `${lang.watchdog_banned_title} - ${lang.watchdog_title}`,
                             icon_url: "https://i.imgur.com/LGV2lqb.png"
                         },
                         color: 12483925,
                         fields: [
                             {
-                                name: "Member",
+                                name: `${lang.watchdog_member}`,
                                 value: `${message.author}`,
                                 inline: true
                             },
                             {
-                                name: "Warns",
+                                name: `${lang.watchdog_warns}`,
                                 value: `${warns}/${config.server_warns_to_ban}`,
                                 inline: true
                             },
                             {
-                                name: "Warn reason",
-                                value: `Spam an invitation link.`,
+                                name: `${lang.watchdog_warn_reason}`,
+                                value: `${lang.watchdog_spam_invite_link}`,
                                 inline: true
                             }
                         ]
@@ -317,44 +317,44 @@ module.exports.antiDiscordInvites = (message, con) => {
             message.author.send(
                 { embed: {
                     author: {
-                        name: `You has been warned! - Watch Dog`,
+                        name: `${lang.watchdog_you_warned_title} - ${lang.watchdog_title}`,
                         icon_url: "https://i.imgur.com/LGV2lqb.png"
                     },
                     color: 12483925,
-                    description: `If you reach the warning limit, you will be banned automatically. If you think this is a mistake, please contact an administrator.`,
+                    description: `${lang.watchdog_you_warned_message}`,
                     fields: [
                         {
-                            name: "You",
+                            name: `${lang.watchdog_you}`,
                             value: `${message.author}`,
                             inline: true
                         },
                         {
-                            name: "Warns",
+                            name: `${lang.watchdog_warns}`,
                             value: `${warns}/${config.server_warns_to_ban}`,
                             inline: true
                         },
                         {
-                            name: "Date",
+                            name: `${lang.watchdog_date}`,
                             value: `\`${date}\``,
                             inline: true
                         },
                         {
-                            name: "Channel",
+                            name: `${lang.watchdog_channel}`,
                             value: `\`${message.channel.name}\``,
                             inline: true
                         },
                         {
-                            name: "Warn ID",
+                            name: `${lang.watchdog_warnid}`,
                             value: `\`#${code}\``,
                             inline: true
                         },
                         {
-                            name: "Warn reason",
-                            value: `Spam an invitation link.`,
+                            name: `${lang.watchdog_warn_reason}`,
+                            value: `${lang.watchdog_spam_invite_link}`,
                             inline: true
                         },
                         {
-                            name: "Your message",
+                            name: `${lang.watchdog_your_message}`,
                             value: `\`\`\`${message.content}\`\`\``
                         },
                     ]
@@ -391,14 +391,14 @@ module.exports.welcomeSystem = (member, con) => {
     chan.send(
         { embed: {
             author: {
-                name: `New Member!`,
+                name: `${lang.welcome_new}`,
                 icon_url: "https://i.imgur.com/xdzvRok.png"
             },
             thumbnail: {
-                url: "https://i.imgur.com/uQvZe0Z.png"
+                url: `${lang.welcome_image}`
             },
             color: 10019893,
-            description: `Welcome ${member_tag} to **${member.guild.name}**!`,
+            description: `${lang.welcome_welcome} ${member_tag} ${lang.welcome_to} **${member.guild.name}**!`,
         }
     }).then(function (message) {
         message.react("💚")
@@ -421,11 +421,11 @@ module.exports.leaveSystem = (member, con) => {
     chan.send(
         { embed: {
             author: {
-                name: `Bye Bye!`,
+                name: `${lang.leave_bye}`,
                 icon_url: "https://i.imgur.com/5az7KL7.png"
             },
             color: 14630719,
-            description: `${member.user.username} has left the server.`,
+            description: `${member.user.username} ${lang.leave_message}`,
         }
     });
     con.query(`DELETE FROM users WHERE uid='${member.user.id}' AND server='${member.guild.id}'`, (err) => {
@@ -438,7 +438,7 @@ module.exports.leaveSystem = (member, con) => {
 module.exports.autoRoleOnJoin = (member) => {
     moduleActive('autoroleonjoin');
     if(member.bot) return;
-    member.addRole(config.role_default);
+    //member.addRole(config.role_default);
 }
 
 /* Invite System */
@@ -469,14 +469,14 @@ module.exports.inviteSystem = (member, con, invites, bot) => {
         chan.send(
             { embed: {
                 author: {
-                    name: `Invite Redeemed!`,
+                    name: `${lang.invite_title}`,
                     icon_url: "https://i.imgur.com/DNXdY77.png"
                 },
                 thumbnail: {
-                    url: "https://i.imgur.com/xFhO4ZA.png"
+                    url: `${lang.invite_image}`
                 },
                 color: 7506394,
-                description: `**${member.user.username}** has used the invitation code of ${invite.inviter.username}!\n**${invite.inviter.username}** has won a bonus **${bonus_exp}xp** and **${config.server_money_sign}${bonus_money}**!\nInvitation code used: \`${invite.code}\` (**${invite.uses}** invitations)`,
+                description: `**${member.user.username}** ${lang.invite_message_1} ${invite.inviter.username}!\n**${invite.inviter.username}** ${lang.invite_message_2} **${bonus_exp}xp** ${lang.invite_message_3} **${config.server_money_sign}${bonus_money}**!\n${lang.invite_message_4} \`${invite.code}\` (**${invite.uses}** ${lang.invite_message_5})`,
             }
         });
         /* sql */
@@ -520,9 +520,9 @@ module.exports.reactionAddRole = (reaction, user, con) => {
                         member.send(
                             { embed:
                                 {
-                                    title: "Auto Roles",
+                                    title: `${lang.roles_title}`,
                                     color: color_role,
-                                    description: `Now you have the **${role.name}** role!`
+                                    description: `${lang.roles_add_1} **${role.name}** ${lang.roles_add_2}`
                                 }
                             }
                         );
@@ -531,9 +531,9 @@ module.exports.reactionAddRole = (reaction, user, con) => {
                         member.send(
                             { embed: 
                                 {
-                                    title: "Auto Roles",
+                                    title: `${lang.roles_title}`,
                                     color: color_role,
-                                    description: `You need **Level ${level_required}** to have **${role.name}** role!`
+                                    description: `${lang.roles_no_level_1} **${lang.roles_no_level_2} ${level_required}** ${lang.roles_no_level_3} **${role.name}** ${lang.roles_no_level_4}`
                                 }
                             }
                         );
@@ -570,9 +570,9 @@ module.exports.reactionRemoveRole = (reaction, user) => {
                     return member.send(
                         { embed: 
                             { 
-                                title: "Auto Roles",
+                                title: `${lang.roles_title}`,
                                 color: color_role,
-                                description:`You no longer have the **${role.name}** role!`
+                                description:`${lang.roles_remove_1} **${role.name}** ${lang.roles_remove_2}`
                             }
                         }
                     );
