@@ -66,8 +66,8 @@ $ pm2 start index.js --name "bot-name"
 | !clearchat | !cc | Clear messages of chat. | staff | !clearchat (number) |
 | !commands | !c | Show all command list. | member |  !commands |
 | !embed | !emb | Create an embed message. | staff |  !embed (message) |
-| !fortune | !f | Open a fortune cookie. | member |  !fortune |
-| !giphy | !g | Show gifs from giphy.com. | member |  !giphy (text) |
+| !fortune | !fc | Open a fortune cookie. | member |  !fortune |
+| !giphy | !gp !gif | Show gifs from giphy.com. | member |  !giphy (text) |
 | !leaderboard | !lb | Show member leaderboards. | member |  !leaderboard |
 | !level | !lvl | Show level and experience. | member |  !level |
 | !selfroles | !sr | Auto asignation of roles with reaction. | admin |  !selfroles |
