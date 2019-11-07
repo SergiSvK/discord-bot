@@ -8,8 +8,7 @@
   <a href="#images">Images</a>
 </p>
 <p align="center">
-  <a href="https://discord.gg/AAJ45qF"><img src="https://img.shields.io/discord/424697508103716865.svg?colorB=%237289da&label=Discord&logo=Discord&logoColor=%23ffffff&style=flat"></a>
-  <a href="#_"><img src="https://img.shields.io/github/downloads/losdevpath/discord-bot/total.svg?style=flat"></a>
+  <a href="https://discord.gg/uVZvykk"><img src="https://img.shields.io/discord/424697508103716865.svg?colorB=%237289da&label=Discord&logo=Discord&logoColor=%23ffffff&style=flat"></a>
   <a href="#_"><img src="https://img.shields.io/github/license/losdevpath/discord-bot.svg?style=flat"></a>
   <a href="#_"><img src="https://img.shields.io/github/last-commit/losdevpath/discord-bot.svg?style=flat"></a>
   <a href="#_"><img src="https://img.shields.io/github/stars/losdevpath/discord-bot.svg?style=flat"></a>
