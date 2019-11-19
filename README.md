@@ -8,8 +8,7 @@
   <a href="#images">Images</a>
 </p>
 <p align="center">
-  <a href="https://discord.gg/AAJ45qF"><img src="https://img.shields.io/discord/424697508103716865.svg?colorB=%237289da&label=Discord&logo=Discord&logoColor=%23ffffff&style=flat"></a>
-  <a href="#_"><img src="https://img.shields.io/github/downloads/losdevpath/discord-bot/total.svg?style=flat"></a>
+  <a href="https://discord.gg/uVZvykk"><img src="https://img.shields.io/discord/642006588206350346.svg?colorB=%237289da&label=Discord&logo=Discord&logoColor=%23ffffff&style=flat"></a>
   <a href="#_"><img src="https://img.shields.io/github/license/losdevpath/discord-bot.svg?style=flat"></a>
   <a href="#_"><img src="https://img.shields.io/github/last-commit/losdevpath/discord-bot.svg?style=flat"></a>
   <a href="#_"><img src="https://img.shields.io/github/stars/losdevpath/discord-bot.svg?style=flat"></a>
@@ -67,8 +66,8 @@ $ pm2 start index.js --name "bot-name"
 | !clearchat | !cc | Clear messages of chat. | staff | !clearchat (number) |
 | !commands | !c | Show all command list. | member |  !commands |
 | !embed | !emb | Create an embed message. | staff |  !embed (message) |
-| !fortune | !f | Open a fortune cookie. | member |  !fortune |
-| !giphy | !g | Show gifs from giphy.com. | member |  !giphy (text) |
+| !fortune | !fc | Open a fortune cookie. | member |  !fortune |
+| !giphy | !gp !gif | Show gifs from giphy.com. | member |  !giphy (text) |
 | !leaderboard | !lb | Show member leaderboards. | member |  !leaderboard |
 | !level | !lvl | Show level and experience. | member |  !level |
 | !selfroles | !sr | Auto asignation of roles with reaction. | admin |  !selfroles |
