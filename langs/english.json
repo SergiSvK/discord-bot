@@ -47,5 +47,7 @@
   "roles_no_level_3": "to have",
   "roles_no_level_4": "role!",
   "roles_remove_1": "You no longer have the",
-  "roles_remove_2": "role!"
+  "roles_remove_2": "role!",
+  "vote_already_voted": "You have already voted! - Polls",
+  "vote_already_voted_desc": "You have already voted this poll! Delete your vote to vote another option."
 }
