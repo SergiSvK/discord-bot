@@ -2,6 +2,9 @@
   Discord-Bot by <a href="https://losdev.es" target="_blank">LOSDEV</a>
 </h1>
 <p align="center">
+  This is now ABANDONED.
+</p>
+<p align="center">
   <a href="#commands">Commands</a> •
   <a href="#requirements">Requirements</a> •
   <a href="#installation">Installation</a> •
